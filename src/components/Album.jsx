@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Player from "./Player";
 
 const AlbumPage = () => {
   const { id } = useParams();
   const [album, setAlbum] = useState(null);
+  const [selectedSongs, setSelectedSongs] = useState(() => {
+    const savedSongs = JSON.parse(localStorage.getItem("selectedSongs"));
+    return savedSongs ? savedSongs : [];
+  });
 
   useEffect(() => {
     async function fetchAlbum() {
@@ -36,6 +41,23 @@ const AlbumPage = () => {
 
     fetchAlbum();
   }, [id]);
+
+  useEffect(() => {
+    localStorage.setItem("selectedSongs", JSON.stringify(selectedSongs));
+  }, [selectedSongs]);
+
+  const toggleSelected = (id) => {
+    const index = selectedSongs.indexOf(id);
+    if (index === -1) {
+      setSelectedSongs([...selectedSongs, id]);
+    } else {
+      setSelectedSongs([
+        ...selectedSongs.slice(0, index),
+        ...selectedSongs.slice(index + 1),
+      ]);
+    }
+    console.log("Selected songs:", selectedSongs); // aggiunta della console.log
+  };
 
   if (!album) {
     return <div>Loading...</div>;
@@ -84,6 +106,17 @@ const AlbumPage = () => {
                           ? "0" + (parseInt(track.duration) % 60)
                           : parseInt(track.duration) % 60}
                       </small>
+                      <div
+                        className="heartIcon"
+                        onClick={() => toggleSelected(track.id)}
+                      >
+                        <FontAwesomeIcon
+                          icon={faHeart}
+                          color={
+                            selectedSongs.includes(track.id) ? "green" : "white"
+                          }
+                        />
+                      </div>
                     </div>
                   ))}
                 </div>
