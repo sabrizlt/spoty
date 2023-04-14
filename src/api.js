@@ -58,7 +58,7 @@ const headers = new Headers({
     const rockArtists = [
       "Queen",
       "The Rolling Stones",
-      "Bob Dylan",
+      "Maneskin",
       "AC/DC",
       "Jimi Hendrix",
       "John Lennon"
@@ -76,12 +76,13 @@ const headers = new Headers({
   
     const hipHopArtists = [
       "Eminem",
-      "Future",
+      "Gue",
       "Drake",
       "Tupac",
       "50 Cent",
-      "Migos",
-      "Travis Scott"
+      "Marracahs",
+      "Travis Scott",
+      "Sfera Ebbasta"
     ];
   
     const fetchRandomArtistSongs = async (artists) => {
